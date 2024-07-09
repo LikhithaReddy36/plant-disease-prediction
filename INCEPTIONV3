@@ -1,0 +1,73 @@
+import tensorflow as tf
+import pandas as pd
+from tensorflow.keras.utils import to_categorical
+import random
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.layers import Input, Lambda, Dense, Flatten, Conv2D, MaxPooling2D, Dropout, Activation, BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras.applications.inception_v3 import Inceptionv3
+from keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications.inception_v3 import preprocess_input
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.preprocessing.image import ImageDataGenerator,load_img, array_to_img, img_to_array
+from tensorflow.keras.models import Sequential
+from glob import glob
+
+IMAGE_SIZE=[224,224]
+inception = InceptionV3(input_shape=IMAGE_SIZE + [3], weights='imagenet', include_top=False)
+for layer in inception.layers:
+layer.trainable = False
+train_path = './New Plant Diseases Dataset(Augmented)/train"
+valid_path = *. /New Plant Diseases Dataset(Augmented)/valid"
+folders = glob("./New Plant Diseases Dataset(Augmented)/train/ ** )
+X = Flatten()(inception.output)
+prediction = Dense(len(folders), activation="softmax")(x)
+model = Model(inputs=inception.input, outputs=prediction)
+model.sunnary()
+model.compile(
+loss="categorical_crossentropy',
+optimizer='adam',
+metrics=['accuracy"]
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+train_datagen = ImageDataGenerator(rescale = 1./255,
+shear_range = 0.2,
+zoom_range = 0.2,
+horizontal_flip = True)
+
+test_datagen = ImageDataGenerator(rescale = 1./255)
+
+training_set = train_datagen.flow_from_directory('./New Plant Diseases Dataset(Augmented)/train',
+target_size = (224, 224),
+batch_size = 32,
+class_mode = 'categorical')
+
+r = model.fit_generator(
+training_set,
+validation_data test_set,
+epochs=10,
+steps_per_epoch=len(training_set),
+validation_steps=len(test_set)
+
+# Plot the Loss and Accuracy
+# Loss
+plt.plot(r.history['loss'], label='train loss')
+plt.plot(r.history['val_loss'], label='val loss')
+plt.legend()
+plt. show()
+plt.savefig('LossVal_loss')
+
+# Accuracy
+plt.plot(r.history['accuracy'], label='train acc')
+plt.plot(r.history['val_accuracy'], label='val acc')
+plt. legend()
+plt. show()
+plt.savefig('AccVal_acc')
+
+model.save("inceptionV3.h5")
+
+)
